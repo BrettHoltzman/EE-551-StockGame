@@ -27,6 +27,8 @@ def main():
                 os.remove("./GainsLosses.txt")
             if os.path.isfile("./SellStock.txt"):
                 os.remove("./SellStock.txt")
+        elif  operation == 'Research':
+            alpha=Research()
         elif  operation == 'Close':
             finish=1
 def StoreBuy(Name,buycost,number):
@@ -241,7 +243,26 @@ def Net():
         z.write(NetSoldStock)
         z.close()
     h.close()
+def Research():
+    ticker=raw_input("Enter Stock Ticker")
+    start_date=raw_input("Enter Start Date no more than 5 years ago in format like 2018-05-01")
+    end_date=raw_input("Enter End Date no more than 5 years ago in format like 2019-05-01")
+    panel_data = data.DataReader(ticker, 'iex',start_date,end_date)
+    all_weekdays = pd.date_range(start=start_date, end=end_date, freq='B')
+
+    close=panel_data['close']
+    i=0;
+    p=[]
+    s=[]
+    while i< len(close):
+        p.append(close[i])
+        s.append(all_weekdays[i])
+        i=i+1
+
+    plt.plot(s,p,label=ticker)
+    plt.show()
+
+
 
 if __name__== '__main__':
     main()
-
